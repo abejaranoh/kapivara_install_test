@@ -55,7 +55,7 @@ jobs:
       image: ${{ matrix.container }}
     strategy:
       matrix:
-        container: [ "debian:forky","debian:13","debian:12","debian:11"]
+        container: [ "debian:testing","debian:stable","debian:oldstable","debian:oldoldstable"]
     steps:
       - name: Install dependencies
         run: |
