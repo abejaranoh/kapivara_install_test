@@ -1,0 +1,71 @@
+name: kapivara install test
+on:
+  workflow_dispatch:
+  push:
+env:
+  AUTHOR: JoseGaldamez
+  REPO: Kapivara
+  VERSION: 0.1.9
+  PACKAGE_AMD: Kapivara_0.1.9_amd64.deb 
+jobs:
+  Ubuntu:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        include:
+          - os: ubuntu-24.04
+            arch: amd64
+          - os: ubuntu-24.04-arm
+            arch: arm64
+          - os: ubuntu-22.04
+            arch: amd64
+          - os: ubuntu-22.04-arm
+            arch: arm64
+            
+    steps:
+      
+      - name: Install Dependencies
+        run: |
+          sudo apt update
+          sudo apt install wget
+      
+      - name: Get Package AMD 64
+        if: matrix.arch == 'amd64'
+        run: |
+          wget https://github.com/{AUTHOR}/{REPO}/releases/download/v${VERSION}/${PACKAGE_AMD}
+
+#      - name: Get Package ARM 64
+#        if: matrix.arch == 'arm64'
+#        run: | 
+#          wget https://github.com/goastian/midori-desktop/releases/download/v${VERSION}/${PACKAGE_ARM}
+     
+      - name: Install Kapivara AMD 64
+        if: matrix.arch == 'amd64'
+        run: |
+          sudo apt install ./$PACKAGE_AMD        
+
+#      - name: Install Kapivara ARM 64
+#        if: matrix.arch == 'arm64'
+#        run: |
+#          sudo apt install ./$PACKAGE_ARM        
+
+  Debian:
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.container }}
+    strategy:
+      matrix:
+        container: [ "debian:forky","debian:13","debian:12","debian:11"]
+    steps:
+      - name: Install dependencies
+        run: |
+          apt update
+      - name: install wget
+        run: |
+          apt install wget -y
+      - name: Get package
+        run: | 
+          wget https://github.com/{AUTHOR}/{REPO}/releases/download/v$VERSION/$PACKAGE_AMD
+      - name: Install Kapivara
+        run: |
+          apt install ./$PACKAGE_AMD -y
