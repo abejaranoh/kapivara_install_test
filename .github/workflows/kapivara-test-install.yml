@@ -32,7 +32,7 @@ jobs:
       - name: Get Package AMD 64
         if: matrix.arch == 'amd64'
         run: |
-          wget https://github.com/{AUTHOR}/{REPO}/releases/download/v${VERSION}/${PACKAGE_AMD}
+          wget https://github.com/${AUTHOR}/${REPO}/releases/download/v${VERSION}/${PACKAGE_AMD}
 
 #      - name: Get Package ARM 64
 #        if: matrix.arch == 'arm64'
@@ -65,7 +65,7 @@ jobs:
           apt install wget -y
       - name: Get package
         run: | 
-          wget https://github.com/{AUTHOR}/{REPO}/releases/download/v$VERSION/$PACKAGE_AMD
+          wget https://github.com/$AUTHOR/$REPO/releases/download/v$VERSION/$PACKAGE_AMD
       - name: Install Kapivara
         run: |
           apt install ./$PACKAGE_AMD -y
